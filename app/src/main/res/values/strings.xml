@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">NoteMarkEdit</string>
+    <string name="log_in">Log In</string>
+    <string name="capture_your_thoughts_and_ideas">Capture your thoughts and ideas.</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="email_hint">john@example.com</string>
+    <string name="password">Password</string>
+    <string name="create_account">Create account</string>
+    <string name="username_hint">John.doe</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="register_last_text">Already have an account?</string>
+    <string name="username_error">Username must be atleast 3 characters</string>
+    <string name="email_error">Invalid email provided</string>
+    <string name="password_error">Password must be at least 8 characters and include a number or symbol</string>
+    <string name="repeat_password_error">Passwords do not match</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
 </resources>
