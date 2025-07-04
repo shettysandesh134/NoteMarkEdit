@@ -108,6 +108,7 @@ fun LoginScreen(
                             onAction(LoginAction.onPasswordChanged(it))
                         },
                         modifier = Modifier.fillMaxWidth(),
+                        isLoading = state.isLoginInProgress,
                         dontHaveAccountClicked = {
                             onAction(LoginAction.OnDontHaveAccountClicked)
                         }
@@ -136,6 +137,7 @@ fun LoginScreen(
                         },
                         modifier = Modifier
                             .weight(1f),
+                        isLoading = state.isLoginInProgress,
                         dontHaveAccountClicked = {
                             onAction(LoginAction.OnDontHaveAccountClicked)
                         }
@@ -164,6 +166,7 @@ fun LoginScreen(
                             onAction(LoginAction.onEmailChanged(it))
                         },
                         passwordText = state.password,
+                        isLoading = state.isLoginInProgress,
                         onPasswordTextChange = {
                             onAction(LoginAction.onPasswordChanged(it))
                         },

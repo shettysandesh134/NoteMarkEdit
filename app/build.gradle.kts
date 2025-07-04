@@ -21,11 +21,17 @@ android {
 
     buildTypes {
         release {
+            buildConfigField("String", "BASE_URL", "\"https://notemark.pl-coding.com\"")
+            buildConfigField("String", "USER_EMAIL", "sandesh.shetty134@gmail.com")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://notemark.pl-coding.com\"")
+            buildConfigField("String", "USER_EMAIL", "\"sandesh.shetty134@gmail.com\"")
         }
     }
     compileOptions {
@@ -37,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -54,6 +61,12 @@ dependencies {
 
     //DI-Koin
     implementation(libs.bundles.koin)
+
+    // ktor
+    implementation(libs.bundles.ktor)
+
+    //Timber
+    implementation(libs.timber)
 
     // Navigation
     implementation(libs.androidx.compose.navigation)

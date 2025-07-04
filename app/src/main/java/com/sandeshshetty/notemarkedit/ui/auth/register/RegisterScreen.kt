@@ -1,5 +1,6 @@
 package com.sandeshshetty.notemarkedit.ui.auth.register
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +41,7 @@ import com.sandeshshetty.notemarkedit.R
 import com.sandeshshetty.notemarkedit.core.presentation.designsystem.theme.NoteMarkEditTheme
 import com.sandeshshetty.notemarkedit.core.presentation.util.DeviceMode
 import com.sandeshshetty.notemarkedit.core.presentation.util.DeviceModeInfo
+import com.sandeshshetty.notemarkedit.core.presentation.util.ObserveAsEvents
 import com.sandeshshetty.notemarkedit.ui.auth.login.components.LoginHeader
 import com.sandeshshetty.notemarkedit.ui.auth.register.components.RegisterForm
 import org.koin.androidx.compose.koinViewModel
@@ -49,6 +53,30 @@ fun RegisterRoot(
     onSuccessfulRegistration: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    ObserveAsEvents(viewModel.events) { event->
+        when (event) {
+            is RegisterEvent.RegisterError -> {
+                keyboardController?.hide()
+                Toast.makeText(
+                    context,
+                    event.error.asString(context),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            is RegisterEvent.RegisterionSuccess -> {
+                keyboardController?.hide()
+                Toast.makeText(
+                    context,
+                    R.string.register_success,
+                    Toast.LENGTH_LONG
+                ).show()
+                onSuccessfulRegistration()
+            }
+        }
+    }
 
     RegisterScreen(
         state = state,

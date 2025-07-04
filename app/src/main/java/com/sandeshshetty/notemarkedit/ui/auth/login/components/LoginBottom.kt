@@ -35,6 +35,7 @@ fun LoginBottom(
     onEmailTextChange: (String) -> Unit,
     passwordText: String,
     onPasswordTextChange: (String) -> Unit,
+    isLoading: Boolean = false,
     modifier: Modifier = Modifier,
     dontHaveAccountClicked: () -> Unit,
 ) {
@@ -65,6 +66,7 @@ fun LoginBottom(
         NoteMarkEditButton(
             text = stringResource(R.string.log_in),
             onClick = {},
+            isLoading = isLoading,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(12.dp))
