@@ -81,7 +81,9 @@ private fun NavGraphBuilder.authGraph(controller: NavHostController)  {
                         restoreState = true
                     }
                 },
-                onSuccessfulRegistration = {}
+                onSuccessfulRegistration = {
+                    controller.navigate(NavigationRoute.LoginRoute)
+                }
             )
         }
     }

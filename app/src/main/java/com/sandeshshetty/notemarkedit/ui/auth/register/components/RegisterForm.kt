@@ -116,10 +116,13 @@ fun RegisterForm(
 
         NoteMarkEditButton(
             text = stringResource(R.string.create_account),
-            onClick = {},
+            onClick = {
+                onAction(RegisterAction.OnRegisterClicked)
+            },
             enabled = state.canRegister,
             borderContainerColor = Color.Transparent,
             textColor = buttonTextColor,
+            isLoading = state.isRegistering,
             modifier = Modifier.fillMaxWidth()
         )
 

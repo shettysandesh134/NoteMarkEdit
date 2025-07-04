@@ -1,12 +1,15 @@
 package com.sandeshshetty.notemarkedit.ui.auth.di
 
+import com.sandeshshetty.notemarkedit.data.auth.AuthRepositoryImpl
 import com.sandeshshetty.notemarkedit.data.auth.EmailPatternValidator
+import com.sandeshshetty.notemarkedit.domain.auth.AuthRepository
 import com.sandeshshetty.notemarkedit.domain.auth.PatternValidator
 import com.sandeshshetty.notemarkedit.domain.auth.UserDataValidator
 import com.sandeshshetty.notemarkedit.ui.auth.login.LoginViewModel
 import com.sandeshshetty.notemarkedit.ui.auth.register.RegisterViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 /**
@@ -19,6 +22,7 @@ val authModule = module {
         EmailPatternValidator
     }
     singleOf(::UserDataValidator)
+    singleOf(::AuthRepositoryImpl).bind<AuthRepository>()
 
     viewModelOf(::LoginViewModel)
     viewModelOf(::RegisterViewModel)
