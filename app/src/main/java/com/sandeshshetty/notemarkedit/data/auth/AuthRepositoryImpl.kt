@@ -4,6 +4,7 @@ import com.sandeshshetty.notemarkedit.data.networking.post
 import com.sandeshshetty.notemarkedit.domain.auth.AuthRepository
 import com.sandeshshetty.notemarkedit.domain.util.DataError
 import com.sandeshshetty.notemarkedit.domain.util.EmptyResult
+import com.sandeshshetty.notemarkedit.domain.util.Result
 import io.ktor.client.HttpClient
 
 /**
@@ -27,5 +28,20 @@ class AuthRepositoryImpl(
                 password = password
             )
         )
+    }
+
+    override suspend fun login(
+        email: String,
+        password: String
+    ): EmptyResult<DataError.Network> {
+        val result = httpClient.post<LoginRequest, LoginResponse>(
+            route = "/api/auth/login",
+            body = LoginRequest(
+                email = email,
+                password = password
+            )
+        )
+
+        return Result.Error(DataError.Network.UNKNOWN)
     }
 }

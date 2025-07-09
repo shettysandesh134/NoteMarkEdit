@@ -18,7 +18,9 @@ fun DataError.asUiText(): UiText {
 //        DataError.Network.UNAUTHORIZED -> UiText.StringResource(
 //            R.string.
 //        )
-//        DataError.Network.CONFLICT -> {}
+        DataError.Network.CONFLICT -> UiText.StringResource(
+            R.string.conflict_error
+        )
         DataError.Network.TOO_MANY_REQUESTS -> UiText.StringResource(
             R.string.error_too_many_requests
         )

@@ -109,7 +109,7 @@ class RegisterViewModel(
                 email = _state.value.email.trim(),
                 password = _state.value.password
             )
-            _state.value = _state.value.copy(
+             _state.value = _state.value.copy(
                 isRegistering = false
             )
             when(result) {

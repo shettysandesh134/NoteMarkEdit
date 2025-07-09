@@ -24,4 +24,5 @@
     <string name="error_serialization">Oops, couldn\'t parse data.</string>
     <string name="error_unknown">An unknown error occurred.</string>
     <string name="register_success">Registration Success!!</string>
+    <string name="conflict_error">Already exists</string>
 </resources>
