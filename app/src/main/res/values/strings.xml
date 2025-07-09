@@ -25,4 +25,5 @@
     <string name="error_unknown">An unknown error occurred.</string>
     <string name="register_success">Registration Success!!</string>
     <string name="conflict_error">Already exists</string>
+    <string name="login_success">Login Successfull!!.</string>
 </resources>

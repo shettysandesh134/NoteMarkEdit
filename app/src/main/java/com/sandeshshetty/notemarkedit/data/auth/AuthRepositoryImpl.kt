@@ -1,10 +1,13 @@
 package com.sandeshshetty.notemarkedit.data.auth
 
 import com.sandeshshetty.notemarkedit.data.networking.post
+import com.sandeshshetty.notemarkedit.domain.auth.AuthInfo
 import com.sandeshshetty.notemarkedit.domain.auth.AuthRepository
+import com.sandeshshetty.notemarkedit.domain.auth.SessionStorage
 import com.sandeshshetty.notemarkedit.domain.util.DataError
 import com.sandeshshetty.notemarkedit.domain.util.EmptyResult
 import com.sandeshshetty.notemarkedit.domain.util.Result
+import com.sandeshshetty.notemarkedit.domain.util.emptyDataResult
 import io.ktor.client.HttpClient
 
 /**
@@ -12,7 +15,8 @@ import io.ktor.client.HttpClient
  * Created 7/3/25 at {TIME}
  */
 class AuthRepositoryImpl(
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
+    private val sessionStorage: SessionStorage
 ): AuthRepository {
 
     override suspend fun register(
@@ -42,6 +46,15 @@ class AuthRepositoryImpl(
             )
         )
 
-        return Result.Error(DataError.Network.UNKNOWN)
+        if (result is Result.Success) {
+            sessionStorage.set(
+                AuthInfo(
+                    accessToken = result.data.accessToken,
+                    refreshToken = result.data.refreshToken
+                )
+            )
+        }
+
+        return result.emptyDataResult()
     }
 }
