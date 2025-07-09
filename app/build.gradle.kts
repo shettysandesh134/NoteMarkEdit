@@ -68,6 +68,9 @@ dependencies {
     //Timber
     implementation(libs.timber)
 
+    //encryptedsharedpreferences
+    implementation(libs.androidx.security.crypto.ktx)
+
     // Navigation
     implementation(libs.androidx.compose.navigation)
     implementation(libs.kotlinx.serialization.json)
