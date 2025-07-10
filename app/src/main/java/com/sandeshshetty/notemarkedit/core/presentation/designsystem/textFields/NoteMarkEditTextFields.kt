@@ -75,6 +75,7 @@ fun NoteMarkEditTextFields(
     isTextFieldPassword: Boolean = false,
     isValid: Boolean = true,
     supportingText: String = "",
+    errorText: String = "",
     keyboardType: KeyboardType = KeyboardType.Text,
     modifier: Modifier = Modifier,
 ) {
@@ -105,12 +106,18 @@ fun NoteMarkEditTextFields(
             value = text,
             onValueChange = onValueChange,
             maxLines = 1,
-            isError = text.isNotEmpty() && !isValid,
+            interactionSource = interactionSource,
+            isError = !isTextFieldFocused.value && text.isNotEmpty() && !isValid,
             supportingText = {
-                if (text.isNotEmpty() && !isValid) {
+                if (!isTextFieldFocused.value && text.isNotEmpty() && !isValid) {
+                    Text(
+                        text = errorText,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }else if (isTextFieldFocused.value) {
                     Text(
                         text = supportingText,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             },

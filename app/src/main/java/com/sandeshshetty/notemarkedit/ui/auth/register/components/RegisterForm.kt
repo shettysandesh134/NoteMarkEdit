@@ -68,7 +68,8 @@ fun RegisterForm(
             hint = stringResource(R.string.username_hint),
             label = stringResource(R.string.username),
             isValid = state.isUsernameValid,
-            supportingText = stringResource(R.string.username_error),
+            supportingText = stringResource(R.string.username_supporttext),
+            errorText = stringResource(R.string.username_error),
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -81,7 +82,7 @@ fun RegisterForm(
             hint = stringResource(R.string.email_hint),
             label = stringResource(R.string.email),
             isValid = state.isEmailValid,
-            supportingText = stringResource(R.string.email_error),
+            errorText = stringResource(R.string.email_error),
             keyboardType = KeyboardType.Email,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -95,7 +96,8 @@ fun RegisterForm(
             isLastTextField = false,
             isTextFieldPassword = true,
             isValid = state.isPasswordValid,
-            supportingText = stringResource(R.string.password_error),
+            supportingText = stringResource(R.string.password_supportText),
+            errorText = stringResource(R.string.password_error),
             keyboardType = KeyboardType.Password,
             modifier = Modifier.fillMaxWidth()
 
@@ -110,7 +112,7 @@ fun RegisterForm(
             isLastTextField = true,
             isTextFieldPassword = true,
             isValid = state.isRepeatPasswordValid,
-            supportingText = stringResource(R.string.repeat_password_error),
+            errorText = stringResource(R.string.repeat_password_error),
             keyboardType = KeyboardType.Password,
             modifier = Modifier.fillMaxWidth()
         )
