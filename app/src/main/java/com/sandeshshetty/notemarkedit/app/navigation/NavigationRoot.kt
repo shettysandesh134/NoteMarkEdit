@@ -1,5 +1,6 @@
 package com.sandeshshetty.notemarkedit.app.navigation
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -17,31 +18,29 @@ import com.sandeshshetty.notemarkedit.ui.auth.register.RegisterRoot
 
 @Composable
 fun NavigationRoot(
+    isLoggedIn: Boolean = false,
     navHostController: NavHostController
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = NavigationRoute.AuthRoute
+        startDestination = if (isLoggedIn) NavigationRoute.NoteRoute else NavigationRoute.AuthRoute
     ) {
-        authGraph(navHostController)
-//        composable<NavigationRoute.LandingRoute> {
-//            LandingRoot(
-//                onGetStartedClicked = {
-//
-//                },
-//                onLoginClicked = {
-//                    navHostController.navigate(NavigationRoute.LoginRoute)
-//                }
-//            )
-//        }
-//
-//        composable<NavigationRoute.LoginRoute> {
-//            LoginRoot()
-//        }
+        authGraph(isLoggedIn,navHostController)
+        addNote(navHostController)
     }
 }
 
-private fun NavGraphBuilder.authGraph(controller: NavHostController)  {
+private fun NavGraphBuilder.addNote(controller: NavHostController) {
+    navigation<NavigationRoute.NoteRoute> (
+        startDestination = NavigationRoute.AddNoteRoute
+    ) {
+        composable<NavigationRoute.AddNoteRoute> {
+            Text(text = "Add Note")
+        }
+    }
+}
+
+private fun NavGraphBuilder.authGraph(isLoggedIn: Boolean,controller: NavHostController)  {
     navigation<NavigationRoute.AuthRoute>(
         startDestination = NavigationRoute.LandingRoute
     ) {
@@ -67,7 +66,9 @@ private fun NavGraphBuilder.authGraph(controller: NavHostController)  {
                         restoreState = true
                     }
                 },
-                onSuccessfulLogin = {}
+                onSuccessfulLogin = {
+                   controller.navigate(NavigationRoute.AddNoteRoute)
+                }
             )
         }
         composable<NavigationRoute.RegisterRoute> {

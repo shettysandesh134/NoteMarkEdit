@@ -1,6 +1,7 @@
 package com.sandeshshetty.notemarkedit.app
 
 import android.app.Application
+import com.sandeshshetty.notemarkedit.app.di.appModule
 import com.sandeshshetty.notemarkedit.data.di.dataModule
 import com.sandeshshetty.notemarkedit.ui.auth.di.authModule
 import org.koin.android.ext.koin.androidContext
@@ -18,6 +19,7 @@ class NoteMarkEditApp: Application() {
         startKoin {
             androidContext(this@NoteMarkEditApp)
             modules(
+                appModule,
                 authModule,
                 dataModule
             )

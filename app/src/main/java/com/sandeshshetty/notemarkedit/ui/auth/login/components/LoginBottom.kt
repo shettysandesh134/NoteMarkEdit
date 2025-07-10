@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,9 +37,17 @@ fun LoginBottom(
     passwordText: String,
     onPasswordTextChange: (String) -> Unit,
     isLoading: Boolean = false,
-    modifier: Modifier = Modifier,
+    canLogin: Boolean = false,
+    onLoginClicked: () -> Unit,
     dontHaveAccountClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
+    val buttonTextColor = if (canLogin) {
+        MaterialTheme.colorScheme.onPrimary
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
+    }
+
     Column (
         modifier = modifier
             .fillMaxSize()
@@ -65,8 +74,11 @@ fun LoginBottom(
         Spacer(modifier = Modifier.height(16.dp))
         NoteMarkEditButton(
             text = stringResource(R.string.log_in),
-            onClick = {},
+            onClick = { onLoginClicked() },
             isLoading = isLoading,
+            enabled = canLogin,
+            borderContainerColor = Color.Transparent,
+            textColor = buttonTextColor,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -96,6 +108,8 @@ private fun LoginBottomPreview() {
             passwordText = "",
             onPasswordTextChange = {},
             dontHaveAccountClicked = {},
+            onLoginClicked = {},
+            canLogin = false,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

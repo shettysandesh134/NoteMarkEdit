@@ -8,20 +8,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.sandeshshetty.notemarkedit.app.navigation.NavigationRoot
 import com.sandeshshetty.notemarkedit.core.presentation.designsystem.theme.NoteMarkEditTheme
-import com.sandeshshetty.notemarkedit.ui.auth.landing.LandingRoot
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel by viewModel<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                viewModel.state.isCheckingAuth
+            }
+        }
         enableEdgeToEdge()
         setContent {
             NoteMarkEditTheme {
-                NavigationRoot(
-                    navHostController = rememberNavController()
-                )
+                if (!viewModel.state.isCheckingAuth) {
+                    NavigationRoot(
+                        isLoggedIn = viewModel.state.isLoggedIn,
+                        navHostController = rememberNavController()
+                    )
+                }
+
             }
         }
     }

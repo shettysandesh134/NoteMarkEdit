@@ -1,5 +1,6 @@
 package com.sandeshshetty.notemarkedit.ui.auth.login
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,12 +28,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sandeshshetty.notemarkedit.R
 import com.sandeshshetty.notemarkedit.core.presentation.designsystem.theme.NoteMarkEditTheme
 import com.sandeshshetty.notemarkedit.core.presentation.util.DeviceMode
 import com.sandeshshetty.notemarkedit.core.presentation.util.DeviceModeInfo
+import com.sandeshshetty.notemarkedit.core.presentation.util.ObserveAsEvents
 import com.sandeshshetty.notemarkedit.ui.auth.login.components.LoginBottom
 import com.sandeshshetty.notemarkedit.ui.auth.login.components.LoginHeader
 import org.koin.androidx.compose.koinViewModel
@@ -44,6 +49,30 @@ fun LoginRoot(
     onSuccessfulLogin: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is LoginEvent.LoginSuccess -> {
+                keyboardController?.hide()
+                Toast.makeText(
+                    context,
+                    R.string.login_success,
+                    Toast.LENGTH_LONG
+                ).show()
+                onSuccessfulLogin()
+            }
+            is LoginEvent.LoginError -> {
+                keyboardController?.hide()
+                Toast.makeText(
+                    context,
+                    event.error.asString(context),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
 
     LoginScreen(
         state = state,
@@ -109,6 +138,10 @@ fun LoginScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         isLoading = state.isLoginInProgress,
+                        canLogin = state.canLogin,
+                        onLoginClicked = {
+                            onAction(LoginAction.onLoginClicked)
+                        },
                         dontHaveAccountClicked = {
                             onAction(LoginAction.OnDontHaveAccountClicked)
                         }
@@ -138,6 +171,10 @@ fun LoginScreen(
                         modifier = Modifier
                             .weight(1f),
                         isLoading = state.isLoginInProgress,
+                        canLogin = state.canLogin,
+                        onLoginClicked = {
+                            onAction(LoginAction.onLoginClicked)
+                        },
                         dontHaveAccountClicked = {
                             onAction(LoginAction.OnDontHaveAccountClicked)
                         }
@@ -172,6 +209,10 @@ fun LoginScreen(
                         },
                         dontHaveAccountClicked = {
                             onAction(LoginAction.OnDontHaveAccountClicked)
+                        },
+                        canLogin = state.canLogin,
+                        onLoginClicked = {
+                            onAction(LoginAction.onLoginClicked)
                         },
                         modifier = Modifier
                             .widthIn(max = 540.dp)
