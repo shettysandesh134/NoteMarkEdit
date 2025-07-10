@@ -20,4 +20,12 @@ sealed interface NavigationRoute {
 
     @Serializable
     data object RegisterRoute: NavigationRoute
+
+    @Serializable
+    data object NoteRoute: NavigationRoute
+
+    @Serializable
+    data object AddNoteRoute: NavigationRoute
+
+
 }

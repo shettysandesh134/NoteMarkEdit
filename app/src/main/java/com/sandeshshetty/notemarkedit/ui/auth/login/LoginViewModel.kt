@@ -2,8 +2,12 @@ package com.sandeshshetty.notemarkedit.ui.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sandeshshetty.notemarkedit.R
+import com.sandeshshetty.notemarkedit.core.presentation.util.UiText
 import com.sandeshshetty.notemarkedit.core.presentation.util.asUiText
 import com.sandeshshetty.notemarkedit.domain.auth.AuthRepository
+import com.sandeshshetty.notemarkedit.domain.auth.UserDataValidator
+import com.sandeshshetty.notemarkedit.domain.util.DataError
 import com.sandeshshetty.notemarkedit.domain.util.Result
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
+    private val userDataValidator: UserDataValidator,
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
@@ -39,20 +44,25 @@ class LoginViewModel(
     fun onAction(action: LoginAction) {
         when (action) {
             is LoginAction.onEmailChanged -> {
+                val isEmailValid = userDataValidator.isValidEmail(action.email)
                 _state.value = _state.value.copy(
                     email = action.email,
-                    canLogin = action.email.isNotBlank() && _state.value.password.isNotBlank()
+                    canLogin = action.email.isNotBlank() && isEmailValid && _state.value.password.isNotBlank()
                 )
             }
+
             is LoginAction.onPasswordChanged -> {
+                val isEmailValid = userDataValidator.isValidEmail(_state.value.email)
                 _state.value = _state.value.copy(
                     password = action.password,
-                    canLogin = action.password.isNotBlank() && _state.value.email.isNotBlank()
+                    canLogin = action.password.isNotBlank() && _state.value.email.isNotBlank() && isEmailValid
                 )
             }
+
             is LoginAction.onLoginClicked -> {
                 login()
             }
+
             else -> Unit
         }
     }
@@ -72,10 +82,16 @@ class LoginViewModel(
                 isLoginInProgress = false
             )
 
-            when(result) {
+            when (result) {
                 is Result.Error -> {
-                    eventChannel.send(LoginEvent.LoginError(result.error.asUiText()))
+                    if (result.error == DataError.Network.UNAUTHORIZED) {
+                        eventChannel.send(LoginEvent.LoginError(UiText.StringResource(R.string.invalid_credentials)))
+                    } else {
+                        eventChannel.send(LoginEvent.LoginError(result.error.asUiText()))
+                    }
+
                 }
+
                 is Result.Success -> {
                     eventChannel.send(LoginEvent.LoginSuccess)
                 }

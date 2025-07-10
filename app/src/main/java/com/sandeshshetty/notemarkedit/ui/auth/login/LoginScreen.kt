@@ -67,7 +67,7 @@ fun LoginRoot(
                 keyboardController?.hide()
                 Toast.makeText(
                     context,
-                    event.error.toString(),
+                    event.error.asString(context),
                     Toast.LENGTH_LONG
                 ).show()
             }

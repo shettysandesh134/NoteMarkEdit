@@ -18,31 +18,29 @@ import com.sandeshshetty.notemarkedit.ui.auth.register.RegisterRoot
 
 @Composable
 fun NavigationRoot(
+    isLoggedIn: Boolean = false,
     navHostController: NavHostController
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = NavigationRoute.AuthRoute
+        startDestination = if (isLoggedIn) NavigationRoute.NoteRoute else NavigationRoute.AuthRoute
     ) {
-        authGraph(navHostController)
-//        composable<NavigationRoute.LandingRoute> {
-//            LandingRoot(
-//                onGetStartedClicked = {
-//
-//                },
-//                onLoginClicked = {
-//                    navHostController.navigate(NavigationRoute.LoginRoute)
-//                }
-//            )
-//        }
-//
-//        composable<NavigationRoute.LoginRoute> {
-//            LoginRoot()
-//        }
+        authGraph(isLoggedIn,navHostController)
+        addNote(navHostController)
     }
 }
 
-private fun NavGraphBuilder.authGraph(controller: NavHostController)  {
+private fun NavGraphBuilder.addNote(controller: NavHostController) {
+    navigation<NavigationRoute.NoteRoute> (
+        startDestination = NavigationRoute.AddNoteRoute
+    ) {
+        composable<NavigationRoute.AddNoteRoute> {
+            Text(text = "Add Note")
+        }
+    }
+}
+
+private fun NavGraphBuilder.authGraph(isLoggedIn: Boolean,controller: NavHostController)  {
     navigation<NavigationRoute.AuthRoute>(
         startDestination = NavigationRoute.LandingRoute
     ) {
@@ -69,12 +67,9 @@ private fun NavGraphBuilder.authGraph(controller: NavHostController)  {
                     }
                 },
                 onSuccessfulLogin = {
-                   controller.navigate("Add")
+                   controller.navigate(NavigationRoute.AddNoteRoute)
                 }
             )
-        }
-        composable("Add") {
-            Text("Success")
         }
         composable<NavigationRoute.RegisterRoute> {
             RegisterRoot(

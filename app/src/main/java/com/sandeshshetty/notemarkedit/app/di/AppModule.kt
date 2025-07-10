@@ -3,7 +3,9 @@ package com.sandeshshetty.notemarkedit.app.di
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.sandeshshetty.notemarkedit.app.MainViewModel
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
@@ -21,4 +23,6 @@ val appModule = module {
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+
+    viewModelOf(::MainViewModel)
 }

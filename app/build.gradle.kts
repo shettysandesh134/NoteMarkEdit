@@ -71,6 +71,9 @@ dependencies {
     //encryptedsharedpreferences
     implementation(libs.androidx.security.crypto.ktx)
 
+    //splashscreen
+    implementation(libs.androidx.core.splashscreen)
+
     // Navigation
     implementation(libs.androidx.compose.navigation)
     implementation(libs.kotlinx.serialization.json)

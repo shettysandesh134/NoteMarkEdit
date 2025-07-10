@@ -26,4 +26,5 @@
     <string name="register_success">Registration Success!!</string>
     <string name="conflict_error">Already exists</string>
     <string name="login_success">Login Successfull!!.</string>
+    <string name="invalid_credentials">Invalid Credentials</string>
 </resources>
