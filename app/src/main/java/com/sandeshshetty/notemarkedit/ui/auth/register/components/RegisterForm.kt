@@ -56,8 +56,6 @@ fun RegisterForm(
             .imePadding(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
-
         NoteMarkEditTextFields(
             text = state.username,
             onValueChange = {

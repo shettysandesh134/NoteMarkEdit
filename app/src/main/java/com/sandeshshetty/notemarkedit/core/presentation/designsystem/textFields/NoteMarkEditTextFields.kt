@@ -116,15 +116,6 @@ fun NoteMarkEditTextFields(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-//                .bringIntoViewRequester(bringIntoViewRequester)
-//                .focusRequester(focusRequester)
-//                .onFocusChanged { focusState ->
-//                    if (focusState.isFocused) {
-//                        scope.launch {
-//                            bringIntoViewRequester.bringIntoView()
-//                        }
-//                    }
-//                }
             ,
             shape = RoundedCornerShape(16.dp),
             visualTransformation = if (isTextFieldPassword && !isPasswordVisible) {
