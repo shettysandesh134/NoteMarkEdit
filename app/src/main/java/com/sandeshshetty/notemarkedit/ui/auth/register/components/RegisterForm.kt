@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -50,24 +51,24 @@ fun RegisterForm(
         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
     }
 
+    val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = modifier
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
             .imePadding(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
-
         NoteMarkEditTextFields(
             text = state.username,
             onValueChange = {
                 onAction(RegisterAction.OnUsernameChanged(it))
             },
-            label = stringResource(R.string.username),
             hint = stringResource(R.string.username_hint),
+            label = stringResource(R.string.username),
             isValid = state.isUsernameValid,
             supportingText = stringResource(R.string.username_error),
-            isLastTextField = false,
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -77,13 +78,12 @@ fun RegisterForm(
             onValueChange = {
                 onAction(RegisterAction.OnEmailChanged(it))
             },
-            label = stringResource(R.string.email),
             hint = stringResource(R.string.email_hint),
+            label = stringResource(R.string.email),
             isValid = state.isEmailValid,
             supportingText = stringResource(R.string.email_error),
-            isLastTextField = false,
             keyboardType = KeyboardType.Email,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         NoteMarkEditTextFields(
             text = state.password,
@@ -98,6 +98,7 @@ fun RegisterForm(
             supportingText = stringResource(R.string.password_error),
             keyboardType = KeyboardType.Password,
             modifier = Modifier.fillMaxWidth()
+
         )
         NoteMarkEditTextFields(
             text = state.repeatPassword,

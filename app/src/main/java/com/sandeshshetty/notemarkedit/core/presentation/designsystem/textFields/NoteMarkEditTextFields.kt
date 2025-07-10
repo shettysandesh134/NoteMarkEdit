@@ -1,6 +1,9 @@
 package com.sandeshshetty.notemarkedit.core.presentation.designsystem.textFields
 
 import android.R.id.mask
+import android.util.Log
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
@@ -40,6 +43,9 @@ import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
@@ -50,7 +56,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sandeshshetty.notemarkedit.R
 import com.sandeshshetty.notemarkedit.core.presentation.designsystem.theme.NoteMarkEditTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * @author sandeshshetty
@@ -68,15 +76,15 @@ fun NoteMarkEditTextFields(
     isValid: Boolean = true,
     supportingText: String = "",
     keyboardType: KeyboardType = KeyboardType.Text,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var isPasswordVisible by remember {
         mutableStateOf(false)
     }
 
-    val bringIntoViewRequester = remember { BringIntoViewRequester() }
-    val focusRequester = remember { FocusRequester() }
+    var textField2Y by remember { mutableStateOf(0) }
     val focusManager = LocalFocusManager.current
+
     val scope = rememberCoroutineScope()
 
     val interactionSource: MutableInteractionSource = remember {
@@ -115,17 +123,7 @@ fun NoteMarkEditTextFields(
                 onDone = { focusManager.clearFocus() }
             ),
             modifier = Modifier
-                .fillMaxWidth()
-//                .bringIntoViewRequester(bringIntoViewRequester)
-//                .focusRequester(focusRequester)
-//                .onFocusChanged { focusState ->
-//                    if (focusState.isFocused) {
-//                        scope.launch {
-//                            bringIntoViewRequester.bringIntoView()
-//                        }
-//                    }
-//                }
-            ,
+                .fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             visualTransformation = if (isTextFieldPassword && !isPasswordVisible) {
                 PasswordVisualTransformation(mask = '*')
@@ -159,6 +157,7 @@ fun NoteMarkEditTextFields(
                                     contentDescription = null
                                 )
                             }
+
                             !isPasswordVisible -> {
                                 Icon(
                                     imageVector = ImageVector.vectorResource(R.drawable.password_on),
@@ -182,11 +181,10 @@ private fun NoteMarkEditTextFieldsPreview() {
     NoteMarkEditTheme {
         NoteMarkEditTextFields(
             text = "Sandesh",
-            label = "Username",
-            hint = "type username",
             onValueChange = {},
+            hint = "type username",
+            label = "Username",
             isTextFieldPassword = true,
-            isValid = true,
             supportingText = "Username must be atleast 3 characters",
             modifier = Modifier
                 .fillMaxWidth()

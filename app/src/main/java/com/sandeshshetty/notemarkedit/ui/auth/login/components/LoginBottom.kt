@@ -57,19 +57,19 @@ fun LoginBottom(
         NoteMarkEditTextFields(
             text = emailText,
             onValueChange = onEmailTextChange,
-            label = stringResource(R.string.email),
             hint = stringResource(R.string.email_hint),
-            modifier = Modifier.fillMaxWidth()
+            label = stringResource(R.string.email),
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
         NoteMarkEditTextFields(
             text = passwordText,
             onValueChange = onPasswordTextChange,
-            label = stringResource(R.string.password),
             hint = stringResource(R.string.password),
+            label = stringResource(R.string.password),
             isLastTextField = true,
             isTextFieldPassword = true,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
         NoteMarkEditButton(
