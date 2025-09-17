@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.junit5)
 }
 
 android {
@@ -85,4 +86,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Junit5 jupyter api and engine
+    testImplementation(libs.junit5.api)
+    testRuntimeOnly(libs.junit5.engine)
+
+    //parameterized test
+    testImplementation(libs.junit5.params)
+
+    // assertion and mocking
+    testImplementation(libs.assertk)
+    testImplementation(libs.mockk)
 }
